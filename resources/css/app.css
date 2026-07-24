@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+@layer base {
+    body {
+        @apply font-body text-ink bg-paper antialiased;
+    }
+    h1, h2, h3, h4 {
+        @apply font-display;
+    }
+}
+
+@layer components {
+    /* Amas de points repris du logo Pialoa Tech : élément signature réutilisé
+       comme séparateur / puce décorative dans tout le site */
+    .dot-cluster {
+        @apply inline-grid grid-cols-3 gap-1 shrink-0;
+    }
+    .dot-cluster span {
+        @apply block w-2 h-2 rounded-full;
+    }
+    .dot-cluster span:nth-child(1) { @apply bg-ember; }
+    .dot-cluster span:nth-child(2) { @apply bg-moss; }
+    .dot-cluster span:nth-child(3) { @apply bg-slate; }
+    .dot-cluster span:nth-child(4) { @apply bg-claret; }
+    .dot-cluster span:nth-child(5) { @apply bg-slate/40; }
+    .dot-cluster span:nth-child(6) { @apply bg-ember/60; }
+
+    .btn-primary {
+        @apply inline-flex items-center gap-2 bg-ember text-white font-display font-semibold px-6 py-3 rounded-full hover:bg-ink transition-colors duration-200;
+    }
+    .btn-outline {
+        @apply inline-flex items-center gap-2 border-2 border-ink text-ink font-display font-semibold px-6 py-3 rounded-full hover:bg-ink hover:text-white transition-colors duration-200;
+    }
+    .eyebrow {
+        @apply uppercase tracking-[0.2em] text-xs font-semibold text-ember;
+    }
+    .card {
+        @apply bg-white border border-slate/15 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200;
+    }
+    .input-field {
+        @apply w-full border border-slate/30 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-ember focus:border-ember transition;
+    }
+    .label-field {
+        @apply block text-sm font-medium text-ink mb-1;
+    }
+}

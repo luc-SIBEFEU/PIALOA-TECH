@@ -1,0 +1,859 @@
+\documentclass[11pt,a4paper]{report}
+
+% ===================== PACKAGES =====================
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta, shapes.multipart, shapes.geometric, calc, fit, backgrounds}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+% ===================== COULEURS DE LA CHARTE =====================
+\definecolor{ink}{HTML}{14141A}
+\definecolor{paper}{HTML}{FBFAF8}
+\definecolor{ember}{HTML}{F2831D}
+\definecolor{moss}{HTML}{3F7D33}
+\definecolor{claret}{HTML}{7A1F3D}
+\definecolor{slate}{HTML}{5B5D63}
+
+% ===================== TITRES =====================
+\titleformat{\chapter}[display]
+  {\normalfont\Huge\bfseries\color{ink}}
+  {\filright\Large\color{ember}\chaptertitlename~\thechapter}
+  {8pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-10pt}{30pt}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{ink}}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{claret}}{\thesubsection}{1em}{}
+
+% ===================== EN-TETES / PIEDS DE PAGE =====================
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyhead[L]{\small\color{slate}Rapport de conception --- Pialoa Tech}
+\fancyhead[R]{\small\color{slate}\leftmark}
+\fancyfoot[C]{\small\color{slate}\thepage}
+
+% ===================== HYPERREF =====================
+\hypersetup{
+  colorlinks=true,
+  linkcolor=claret,
+  citecolor=moss,
+  urlcolor=ember,
+  pdftitle={Rapport de conception - Pialoa Tech},
+  pdfauthor={Pialoa Tech}
+}
+
+% ===================== BOITES D'INFO =====================
+\newtcolorbox{infobox}[1][]{
+  colback=ember!8, colframe=ember, boxrule=0.8pt, arc=2pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt, #1
+}
+
+% ===================== TABLEAUX =====================
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+
+% ============================================================
+% PAGE DE GARDE
+% ============================================================
+\begin{titlepage}
+\begin{tikzpicture}[remember picture, overlay]
+    \fill[ink] (current page.south west) rectangle ([yshift=24.7cm]current page.south east);
+    \fill[ember] (current page.north west) rectangle ([yshift=-0.6cm]current page.north east);
+\end{tikzpicture}
+
+\vspace*{2.5cm}
+\begin{center}
+    \includegraphics[width=6cm]{logo.png}\\[1.8cm]
+
+    {\color{white}\Large\bfseries ENTREPRISE DE SOLUTIONS DIGITALES}\\[0.4cm]
+    {\color{ember}\rule{8cm}{1.2pt}}\\[1.2cm]
+
+    {\color{white}\fontsize{30}{36}\selectfont\bfseries Rapport de conception}\\[0.4cm]
+    {\color{ember}\Large\bfseries Site vitrine \& back-office de gestion}\\[0.2cm]
+    {\color{white!70!black}\large Plateforme web développée avec Laravel}\\[3cm]
+
+    \begin{tikzpicture}
+        \foreach \x/\c in {0/ember, 1/moss, 2/slate, 3/claret, 4/ember!60, 5/moss!60} {
+            \fill[\c] (\x*0.9,0) circle (0.28);
+        }
+    \end{tikzpicture}\\[2.5cm]
+
+    {\color{white!80!black}\small Version 1.0}\\
+    {\color{white!80!black}\small \today}\\[0.3cm]
+    {\color{white!60!black}\small www.pialoatech.com}
+\end{center}
+\end{titlepage}
+
+\pagestyle{empty}
+\tableofcontents
+\clearpage
+\pagestyle{fancy}
+\setcounter{page}{1}
+
+% ============================================================
+\chapter{Introduction}
+% ============================================================
+
+\section{Contexte du projet}
+
+Pialoa Tech est une entreprise spécialisée dans le développement de solutions
+digitales et électroniques, notamment dans le domaine de la météorologie
+connectée. Dans le cadre du renforcement de sa présence en ligne et de la
+structuration de son offre, l'entreprise a exprimé le besoin de disposer d'un
+site web vitrine dynamique, associé à un espace d'administration permettant
+de gérer en autonomie le contenu publié (produits, services, actualités, avis et
+gestion des stagiaires).
+
+Ce document constitue le \textbf{rapport de conception} du projet. Il
+présente l'analyse des besoins, les choix de modélisation, l'architecture
+technique retenue ainsi que les orientations graphiques et ergonomiques
+adoptées pour la réalisation de la plateforme.
+
+\section{Objectifs du projet}
+
+Les objectifs assignés au projet sont les suivants :
+
+\begin{itemize}[leftmargin=1.2em]
+    \item présenter l'entreprise, ses services et ses produits de manière
+    professionnelle et attractive ;
+    \item permettre la publication et la mise à jour autonome des contenus
+    (produits, services, actualités/événements) sans intervention technique
+    externe ;
+    \item centraliser la gestion administrative des stagiaires accueillis par
+    l'entreprise et de leurs taches;
+    \item garantir un accès sécurisé à l'espace d'administration ;
+    \item proposer une interface cohérente avec l'identité visuelle de
+    l'entreprise, sur ordinateur comme sur mobile.
+\end{itemize}
+
+\section{Périmètre du document}
+
+Ce rapport couvre :
+
+\begin{itemize}[leftmargin=1.2em]
+    \item l'analyse des besoins fonctionnels et non fonctionnels ;
+    \item la spécification des acteurs et des cas d'utilisation ;
+    \item la conception des données (modèle conceptuel et dictionnaire de
+    données) ;
+    \item l'architecture technique et les choix technologiques ;
+    \item la conception de l'interface utilisateur (charte graphique et
+    maquettes fonctionnelles) ;
+    \item les aspects de sécurité retenus.
+\end{itemize}
+
+L'implémentation détaillée (code source, procédure d'installation) fait
+l'objet d'un document distinct (\emph{documentation technique et guide
+d'installation}).
+
+% ============================================================
+\chapter{Analyse des besoins}
+% ============================================================
+
+\section{Présentation des acteurs}
+
+Deux acteurs interagissent avec le système :
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{L{3.2cm} L{10.3cm}}
+\toprule
+\rowcolor{ink!5}
+\textbf{Acteur} & \textbf{Description} \\
+\midrule
+Visiteur & Toute personne consultant le site public, sans authentification
+requise. Il consulte les pages Accueil, À propos, Services, Produits, avis, stagiaires et
+Actualités. \\
+\addlinespace
+Administrateur & Utilisateur authentifié (e-mail + mot de passe) disposant
+d'un accès à l'espace d'administration. Il gère le contenu du site : produits,
+services, événements, avis et fiches stagiaires. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Besoins fonctionnels}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{L{1.3cm} L{11.5cm}}
+\toprule
+\rowcolor{ink!5}
+\textbf{Réf.} & \textbf{Besoin fonctionnel} \\
+\midrule
+\endhead
+BF-01 & Le visiteur peut consulter la page d'accueil présentant l'entreprise. \\
+BF-02 & Le visiteur peut consulter la page « À propos ». \\
+BF-03 & Le visiteur peut consulter la liste des services proposés. \\
+BF-04 & Le visiteur peut consulter la liste des produits, avec pagination. \\
+BF-05 & Le visiteur peut consulter les actualités/événements, ainsi que le
+détail de chacun (y compris télécharger un document associé). \\
+BF-06 & Le visiteur peut consulter les avis des clients sur les services rendues et ajouter un avis sur un service rendu par l'entreprise \\
+BF-07 & Le visiteur peut consulter les stagiaires de ainsi que les détails sur leurs réalisation (y compris télécharger le rapport) \\
+BF-08 & L'administrateur peut s'authentifier via e-mail et mot de passe. \\
+BF-09 & L'administrateur peut consulter un tableau de bord synthétique
+(statistiques, derniers événements ajoutés). \\
+BF-10 & L'administrateur peut ajouter, modifier et supprimer un produit
+(nom, description, site web, image). \\
+BF-11 & L'administrateur peut ajouter, modifier et supprimer un service
+(nom, description, icône). \\
+BF-12 & L'administrateur peut ajouter, modifier et supprimer un événement
+(nom, description, période, image, document). \\
+BF-13 & L'administrateur peut ajouter, modifier et supprimer une fiche
+stagiaire (nom, e-mail, période, mot de passe, secteur, avatar). \\
+BF-14 & L'administrateur peut assigner une tâche (nom, description, période, statut) à un stagiaire et enregister le rapport une fois la tache terminé \\
+BF-15 & L'administrateur peut valider, refuser ou suppprimer les avis des clients \\
+BF-16 & L'administrateur peut se déconnecter de l'espace d'administration. \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{Besoins non fonctionnels}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{L{3cm} L{10.5cm}}
+\toprule
+\rowcolor{ink!5}
+\textbf{Critère} & \textbf{Exigence} \\
+\midrule
+Sécurité & Accès à l'espace d'administration protégé par authentification et
+contrôle de rôle ; mots de passe stockés hachés (bcrypt). \\
+\addlinespace
+Ergonomie & Interface responsive (ordinateur, tablette, mobile), cohérente
+avec la charte graphique de l'entreprise. \\
+\addlinespace
+Performance & Temps de chargement des pages publiques optimisé grâce à la
+pagination des listes et à la mise en cache des vues/routes en production. \\
+\addlinespace
+Maintenabilité & Code structuré selon le patron MVC (Model - Vue - Controlleur), respect des conventions
+Laravel, séparation claire entre contrôleurs publics et contrôleurs
+d'administration. \\
+\addlinespace
+Portabilité & Application déployable sur tout hébergement compatible PHP
+8.3+/MySQL 8. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ============================================================
+\chapter{Spécification fonctionnelle}
+% ============================================================
+
+\section{Diagramme de cas d'utilisation}
+
+La figure~\ref{fig:uc} présente les cas d'utilisation du système, répartis
+entre les deux acteurs identifiés.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[
+    actor/.style={draw=ink, thick, minimum width=1.6cm},
+    uc/.style={draw=ember, thick, ellipse, fill=ember!8, minimum width=3.6cm,
+               minimum height=0.9cm, align=center, font=\small},
+    ucadmin/.style={draw=claret, thick, ellipse, fill=claret!8, minimum width=3.6cm,
+               minimum height=0.9cm, align=center, font=\small},
+    system/.style={draw=slate, thick, rounded corners, minimum width=8.6cm, minimum height=13cm},
+    stickman/.style={draw=ink, thick, fill=none}
+]
+
+% Système
+\node[system] (sys) at (5,0) {};
+\node[above] at (5,6.6) {\bfseries\color{slate} Site Pialoa Tech};
+
+% Acteurs (silhouettes UML dessinées au trait)
+\begin{scope}[shift={(-1.7,3.2)}, stickman]
+    \draw (0,0.55) circle (0.18);
+    \draw (0,0.37) -- (0,-0.25);
+    \draw (-0.28,0.15) -- (0.28,0.15);
+    \draw (0,-0.25) -- (-0.22,-0.65);
+    \draw (0,-0.25) -- (0.22,-0.65);
+\end{scope}
+\node[below=8pt, font=\small\bfseries] at (-1.7,2.35) {Visiteur};
+
+\begin{scope}[shift={(-1.7,-4.5)}, stickman]
+    \draw (0,0.55) circle (0.18);
+    \draw (0,0.37) -- (0,-0.25);
+    \draw (-0.28,0.15) -- (0.28,0.15);
+    \draw (0,-0.25) -- (-0.22,-0.65);
+    \draw (0,-0.25) -- (0.22,-0.65);
+\end{scope}
+\node[below=8pt, font=\small\bfseries] at (-1.7,-5.65) {Administrateur};
+
+\coordinate (visiteur) at (-1.7,3.2);
+\coordinate (admin) at (-1.7,-4.5);
+
+% Cas d'utilisation - visiteur
+\node[uc] (uc1) at (3.6,5.8) {Consulter\\l'accueil};
+\node[uc] (uc2) at (7,5.8) {Consulter\\« À propos »};
+\node[uc] (uc3) at (3.6,4.3) {Consulter\\les services};
+\node[uc] (uc4) at (7,4.3) {Consulter\\les produits};
+\node[uc] (uc5) at (5.3,2.8) {Consulter les\\actualités / événements};
+\node[uc] (uc14) at (2,1.2) {Consulter\\les \\stagiaires};
+
+% Authentification (partagé)
+\node[uc] (uc6) at (5.3,1.2) {S'authentifier};
+
+% Cas d'utilisation - admin
+\node[ucadmin] (uc7) at (3.4,-0.6) {Consulter le\\tableau de bord};
+\node[ucadmin] (uc8) at (7.1,-0.6) {Gérer les\\produits};
+\node[ucadmin] (uc9) at (3.4,-2.1) {Gérer les\\services};
+\node[ucadmin] (uc10) at (7.1,-2.1) {Gérer les\\événements};
+\node[ucadmin] (uc11) at (5.3,-3.6) {Gérer les\\stagiaires \& taches};
+\node[ucadmin] (uc13) at (4,-6) {Gérer les Avis};
+\node[ucadmin] (uc12) at (5.3,-5.1) {Se déconnecter};
+
+% Liens visiteur
+\draw (visiteur) -- (uc1);
+\draw (visiteur) -- (uc2);
+\draw (visiteur) -- (uc3);
+\draw (visiteur) -- (uc4);
+\draw (visiteur) -- (uc5);
+\draw (visiteur) -- (uc14);
+
+% Liens admin
+\draw (admin) -- (uc6);
+\draw (admin) -- (uc7);
+\draw (admin) -- (uc8);
+\draw (admin) -- (uc9);
+\draw (admin) -- (uc10);
+\draw (admin) -- (uc11);
+\draw (admin) -- (uc12);
+\draw (admin) -- (uc13);
+
+% Include
+\draw[dashed, -{Latex[length=2mm]}] (uc7) -- (uc6) node[midway, above, sloped, font=\tiny] {\guillemotleft include\guillemotright};
+
+\end{tikzpicture}
+\caption{Diagramme de cas d'utilisation}
+\label{fig:uc}
+\end{figure}
+
+\clearpage
+\section{Description des cas d'utilisation principaux}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{L{3.3cm} L{9.2cm}}
+\toprule
+\rowcolor{ink!5}
+\multicolumn{2}{l}{\textbf{UC --- Gérer les produits (CRUD)}} \\
+\midrule
+\endhead
+Acteur & Administrateur \\
+Pré-condition & Être authentifié avec le rôle « admin » \\
+Scénario nominal &
+1. L'administrateur accède à la liste des produits.\newline
+2. Il choisit d'ajouter, modifier ou supprimer un produit.\newline
+3. Le système valide les données saisies (nom, description obligatoires ;
+site web au format URL ; image $\leq$ 2 Mo).\newline
+4. Le système enregistre la modification et affiche un message de
+confirmation. \\
+Post-condition & La liste des produits publique est mise à jour. \\
+\bottomrule
+\end{longtable}
+
+\begin{longtable}{L{3.3cm} L{9.2cm}}
+\toprule
+\rowcolor{ink!5}
+\multicolumn{2}{l}{\textbf{UC --- Gérer les événements (CRUD)}} \\
+\midrule
+\endhead
+Acteur & Administrateur \\
+Pré-condition & Être authentifié avec le rôle « admin » \\
+Scénario nominal &
+1. L'administrateur saisit le nom, la description et la période (date de
+début obligatoire, date de fin optionnelle et postérieure à la date de
+début).\newline
+2. Il peut associer une image et un document (PDF, DOC, DOCX $\leq$ 5 Mo).\newline
+3. Le système enregistre l'événement et le publie sur la page « Actualités ». \\
+Post-condition & L'événement est visible dans la liste publique des
+actualités, avec son document téléchargeable le cas échéant. \\
+\bottomrule
+\end{longtable}
+
+\begin{longtable}{L{3.3cm} L{9.2cm}}
+\toprule
+\rowcolor{ink!5}
+\multicolumn{2}{l}{\textbf{UC --- S'authentifier}} \\
+\midrule
+\endhead
+Acteur & Administrateur \\
+Pré-condition & Disposer d'un compte actif \\
+Scénario nominal &
+1. L'administrateur saisit son e-mail et son mot de passe.\newline
+2. Le système vérifie les identifiants.\newline
+3. En cas de succès, l'administrateur est redirigé vers le tableau de bord.\newline
+4. En cas d'échec, un message d'erreur est affiché sans préciser si c'est
+l'e-mail ou le mot de passe qui est incorrect. \\
+Post-condition & Une session authentifiée est ouverte. \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+% ============================================================
+\chapter{Conception des données}
+% ============================================================
+
+\section{Modèle conceptuel de données}
+
+Le modèle de données repose sur cinq entités principales, sans relations
+directes entre elles (le contenu est géré indépendamment par
+l'administrateur). La figure~\ref{fig:mcd} présente le diagramme de classes
+correspondant.
+
+\begin{figure}[h!]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    classe/.style={draw=ink, thick, rectangle split, rectangle split parts=3,
+                   rectangle split part align={center,left,left},
+                   text width=4.1cm, font=\footnotesize, rounded corners=1pt},
+    title/.style={font=\bfseries\small\color{white}, fill=ink}
+]
+
+\node[classe] (user) at (0,7) {
+    \nodepart{one}\cellcolor{ink}\color{white}\bfseries User
+    \nodepart{two}
+    + id : bigint\\
+    + name : string\\
+    + email : string (unique)\\
+    + password : string (hashed)\\
+    + role : string
+    \nodepart{three}
+    + isAdmin() : bool
+};
+
+\node[classe] (produit) at (-8,3.2) {
+    \nodepart{one}\cellcolor{ember}\color{white}\bfseries Produit
+    \nodepart{two}
+    + id : bigint\\
+    + nom : string\\
+    + description : text\\
+    + site\_web : string (nullable)\\
+    + image : string (nullable)
+    \nodepart{three}
+    \phantom{x}
+};
+
+\node[classe] (service) at (-2.6,3.2) {
+    \nodepart{one}\cellcolor{moss}\color{white}\bfseries Service
+    \nodepart{two}
+    + id : bigint\\
+    + nom : string\\
+    + description : text\\
+    + icone : string (nullable)
+    \nodepart{three}
+    \phantom{x}
+};
+
+\node[classe] (evenement) at (2.9,3.2) {
+    \nodepart{one}\cellcolor{claret}\color{white}\bfseries Evenement
+    \nodepart{two}
+    + id : bigint\\
+    + nom : string\\
+    + description : text\\
+    + periode\_debut : date\\
+    + periode\_fin : date (nullable)\\
+    + image : string (nullable)\\
+    + document : string (nullable)
+    \nodepart{three}
+    + estAVenir() : bool
+};
+
+\node[classe] (stagiaire) at (8.6,3.2) {
+    \nodepart{one}\cellcolor{slate}\color{white}\bfseries Stagiaire
+    \nodepart{two}
+    + id : bigint\\
+    + nom : string\\
+    + email : string (unique)\\
+    + password : string (hashed)\\
+    + periode\_debut : date\\
+    + periode\_fin : date (nullable)\\
+    + secteur : string\\
+    + avatar : string (nullable)
+    \nodepart{three}
+    \phantom{x}
+};
+
+\end{tikzpicture}%
+}
+\caption{Diagramme de classes du domaine}
+\label{fig:mcd}
+\end{figure}
+
+\begin{infobox}
+\textbf{Remarque de conception.} Les entités \textit{Produit},
+\textit{Service}, \textit{Evenement} et \textit{Stagiaire} sont
+indépendantes les unes des autres et gérées exclusivement via
+l'espace d'administration par les utilisateurs de type \textit{User}
+(rôle « admin »). Il n'existe pas, dans la version actuelle, d'espace de
+connexion dédié aux stagiaires ; leur mot de passe est prévu pour une
+évolution future (voir chapitre~\ref{ch:perspectives}).
+\end{infobox}
+
+\section{Dictionnaire de données}
+
+\subsection*{Table \texttt{users}}
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{L{2.6cm} L{2.6cm} L{7.8cm}}
+\toprule
+\rowcolor{ink!5}
+\textbf{Champ} & \textbf{Type} & \textbf{Contraintes / description} \\
+\midrule
+id & bigint & Clé primaire, auto-incrémentée \\
+name & varchar & Nom de l'administrateur \\
+email & varchar & Unique, utilisé pour l'authentification \\
+password & varchar & Haché (bcrypt) \\
+role & varchar & Valeur par défaut « admin » \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Table \texttt{produits}}
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{L{2.6cm} L{2.6cm} L{7.8cm}}
+\toprule
+\rowcolor{ink!5}
+\textbf{Champ} & \textbf{Type} & \textbf{Contraintes / description} \\
+\midrule
+id & bigint & Clé primaire \\
+nom & varchar & Obligatoire \\
+description & text & Obligatoire \\
+site\_web & varchar & Facultatif, format URL \\
+image & varchar & Facultatif, chemin de stockage \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Table \texttt{services}}
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{L{2.6cm} L{2.6cm} L{7.8cm}}
+\toprule
+\rowcolor{ink!5}
+\textbf{Champ} & \textbf{Type} & \textbf{Contraintes / description} \\
+\midrule
+id & bigint & Clé primaire \\
+nom & varchar & Obligatoire \\
+description & text & Obligatoire \\
+icone & varchar & Facultatif (nom d'icône libre) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Table \texttt{evenements}}
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{L{2.6cm} L{2.6cm} L{7.8cm}}
+\toprule
+\rowcolor{ink!5}
+\textbf{Champ} & \textbf{Type} & \textbf{Contraintes / description} \\
+\midrule
+id & bigint & Clé primaire \\
+nom & varchar & Obligatoire \\
+description & text & Obligatoire \\
+periode\_debut & date & Obligatoire \\
+periode\_fin & date & Facultatif, postérieure ou égale à la date de début \\
+image & varchar & Facultatif \\
+document & varchar & Facultatif (PDF, DOC, DOCX) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Table \texttt{stagiaires}}
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{L{2.6cm} L{2.6cm} L{7.8cm}}
+\toprule
+\rowcolor{ink!5}
+\textbf{Champ} & \textbf{Type} & \textbf{Contraintes / description} \\
+\midrule
+id & bigint & Clé primaire \\
+nom & varchar & Obligatoire \\
+email & varchar & Unique \\
+periode\_debut & date & Obligatoire \\
+periode\_fin & date & Facultatif \\
+theme & varchar & Obligatoire \\
+description & varchar & Obligatoire \\
+rapport & varchar & Facultatif \\
+avatar & varchar & Facultatif \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Table \texttt{Taches}}
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{L{2.6cm} L{2.6cm} L{7.8cm}}
+\toprule
+\rowcolor{ink!5}
+\textbf{Champ} & \textbf{Type} & \textbf{Contraintes / description} \\
+\midrule
+id & bigint & Clé primaire \\
+nom & varchar & Obligatoire \\
+description & varchar & Obligatoire \\
+date\_debut & date & Obligatoire \\
+date\_fin & date & Facultatif \\
+statut & varchar & Obligatoire \\
+rapport & varchar & Facultatif \\
+stagiaire\_id & bigint & Obligatoire \\
+\bottomrule
+\end{tabular}
+\end{center}
+% ============================================================
+\chapter{Architecture technique}
+% ============================================================
+
+\section{Architecture générale}
+
+L'application repose sur le patron d'architecture \textbf{MVC} (Modèle-Vue-
+Contrôleur) natif du framework Laravel. La figure~\ref{fig:archi} illustre le
+flux de traitement d'une requête.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[
+    box/.style={draw=ink, thick, rounded corners, minimum width=3.1cm,
+                minimum height=1.1cm, align=center, font=\small\bfseries},
+    arrow/.style={-{Latex[length=2.5mm]}, thick, color=slate}
+]
+\node[box, fill=ember!12, draw=ember] (client) at (0,0) {Navigateur\\(client)};
+\node[box, fill=slate!12, draw=slate] (routes) at (4.2,0) {Routes\\\texttt{web.php}};
+\node[box, fill=claret!12, draw=claret] (mw) at (8.4,0) {Middlewares\\\texttt{auth, admin}};
+\node[box, fill=ink!12, draw=ink] (ctrl) at (8.4,-2.2) {Contrôleur};
+\node[box, fill=moss!12, draw=moss] (model) at (4.2,-2.2) {Modèle\\(Eloquent)};
+\node[box, fill=ember!12, draw=ember] (db) at (0,-2.2) {Base de\\données MySQL};
+\node[box, fill=slate!12, draw=slate] (view) at (4.2,-4.4) {Vue Blade};
+\node[box, fill=ink!12, draw=ink] (resp) at (0,-4.4) {Réponse HTML};
+
+\draw[arrow] (client) -- (routes);
+\draw[arrow] (routes) -- (mw);
+\draw[arrow] (mw) -- (ctrl);
+\draw[arrow] (ctrl) -- (model);
+\draw[arrow] (model) -- (db);
+\draw[arrow] (db) -- (model);
+\draw[arrow] (ctrl) |- (view);
+\draw[arrow] (view) -- (resp);
+\draw[arrow] (resp) -- (client);
+\end{tikzpicture}
+\caption{Flux de traitement d'une requête (architecture MVC)}
+\label{fig:archi}
+\end{figure}
+
+\section{Choix technologiques}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{L{3.4cm} L{4cm} L{4.5cm}}
+\toprule
+\rowcolor{ink!5}
+\textbf{Composant} & \textbf{Technologie} & \textbf{Justification} \\
+\midrule
+Framework back-end & Laravel 13 (PHP 8.3+) & Écosystème mature, ORM Eloquent,
+authentification native, respect du patron MVC \\
+\addlinespace
+Base de données & MySQL 8 & Fiabilité, large support d'hébergement, bonne
+intégration avec Eloquent \\
+\addlinespace
+Gabarits de vues & Blade & Moteur de templates natif de Laravel, héritage de
+layouts \\
+\addlinespace
+Style / interface & Tailwind CSS & Approche utilitaire, cohérence rapide
+avec la charte graphique \\
+\addlinespace
+Outillage front & Vite & Compilation rapide des assets CSS/JS \\
+\addlinespace
+Stockage de fichiers & Système de fichiers local (\texttt{storage/app/public}) &
+Suffisant pour le volume attendu ; migrable vers un stockage cloud (S3) si
+besoin \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Organisation des routes}
+
+Les routes sont regroupées en trois ensembles, reflétant les niveaux d'accès :
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{L{3.2cm} L{9.4cm}}
+\toprule
+\rowcolor{ink!5}
+\textbf{Groupe} & \textbf{Description} \\
+\midrule
+Routes publiques & Accessibles sans authentification : accueil, à propos,
+services, produits, actualités. \\
+\addlinespace
+Routes d'authentification & Protégées par le middleware \texttt{guest}
+(connexion) ou \texttt{auth} (déconnexion). \\
+\addlinespace
+Routes d'administration & Préfixées par \texttt{/admin}, protégées par les
+middlewares \texttt{auth} et \texttt{admin} (vérification du rôle) ;
+organisées en ressources CRUD (\texttt{Route::resource}) pour les produits,
+services, événements et stagiaires. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Sécurité}
+
+\begin{itemize}[leftmargin=1.2em]
+    \item \textbf{Authentification} : gérée par le système natif de Laravel
+    (\texttt{Auth::attempt}), avec hachage des mots de passe (bcrypt).
+    \item \textbf{Contrôle d'accès} : un middleware dédié
+    (\texttt{AdminMiddleware}) vérifie que l'utilisateur authentifié possède
+    le rôle « admin » avant d'autoriser l'accès aux routes
+    \texttt{/admin/*}.
+    \item \textbf{Protection CSRF} : jeton CSRF systématique sur tous les
+    formulaires (mécanisme natif Laravel/Blade).
+    \item \textbf{Validation des données} : chaque contrôleur
+    d'administration valide les champs reçus (types, formats, tailles de
+    fichiers) avant tout enregistrement en base.
+    \item \textbf{Gestion des fichiers} : restriction des types de fichiers
+    acceptés (images, PDF/DOC/DOCX) et de leur taille maximale (2 Mo pour les
+    images, 5 Mo pour les documents).
+\end{itemize}
+
+% ============================================================
+\chapter{Conception de l'interface}
+% ============================================================
+
+\section{Charte graphique}
+
+La charte graphique du site reprend directement les couleurs du logo de
+l'entreprise (figure~\ref{fig:palette}).
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+\foreach \i/\name/\hex/\col in {
+    0/ink/\#14141A/ink,
+    1/paper/\#FBFAF8/paper,
+    2/ember/\#F2831D/ember,
+    3/moss/\#3F7D33/moss,
+    4/claret/\#7A1F3D/claret,
+    5/slate/\#5B5D63/slate} {
+    \fill[\col, draw=ink!30] (\i*2.1,0) rectangle ++(1.8,1.8);
+    \node[below, font=\scriptsize] at (\i*2.1+0.9,-0.15) {\name};
+    \node[below, font=\scriptsize] at (\i*2.1+0.9,-0.55) {\hex};
+}
+\end{tikzpicture}
+\caption{Palette de couleurs}
+\label{fig:palette}
+\end{figure}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{L{2.5cm} L{2.5cm} L{6.6cm}}
+\toprule
+\rowcolor{ink!5}
+\textbf{Token} & \textbf{Couleur} & \textbf{Usage} \\
+\midrule
+\texttt{ink} & \#14141A & Texte principal, fonds sombres (footer, sidebar admin) \\
+\texttt{paper} & \#FBFAF8 & Fond clair des pages publiques \\
+\texttt{ember} & \#F2831D & Accent principal --- boutons d'action, liens actifs \\
+\texttt{moss} & \#3F7D33 & Accent secondaire --- messages de succès \\
+\texttt{claret} & \#7A1F3D & Accent tertiaire --- alertes, actions de suppression \\
+\texttt{slate} & \#5B5D63 & Texte secondaire, bordures \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Typographie} : \textit{Space Grotesk} pour les titres,
+\textit{Inter} pour le texte courant. L'amas de points colorés du logo est
+repris comme élément graphique signature (en-tête, pied de page, page de
+connexion, section d'accueil).
+
+\section{Maquettes fonctionnelles}
+
+\subsection*{Page d'accueil (public)}
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[
+    zone/.style={draw=slate, thick, minimum width=11cm, align=center, font=\small},
+]
+\node[zone, minimum height=1cm, fill=ink!85, text=white] (nav) at (0,6) {Logo \hfill Accueil \quad À propos \quad Services \quad Produits \quad Actualités \hfill Connexion};
+\node[zone, minimum height=2.6cm, fill=ink, text=white, font=\bfseries] (hero) at (0,4) {HERO --- « Entreprise de solutions digitales »\\[2pt]\normalfont\small [Bouton : Découvrir nos services] \quad [Bouton : À propos]};
+\node[zone, minimum height=1.8cm, fill=ember!8] (services) at (0,1.7) {Section Services\\[2pt]\small (cartes chargées depuis la base de données)};
+\node[zone, minimum height=1.8cm, fill=moss!8] (produits) at (0,-0.5) {Section Produits\\[2pt]\small (cartes avec image, description, lien)};
+\node[zone, minimum height=1.8cm, fill=claret!8] (actus) at (0,-2.7) {Section Actualités\\[2pt]\small (cartes événements, date, aperçu)};
+\node[zone, minimum height=1.2cm, fill=ember, text=white] (cta) at (0,-4.5) {Bandeau d'appel à l'action};
+\node[zone, minimum height=1.4cm, fill=ink, text=white] (footer) at (0,-6.1) {Pied de page : navigation, contact, logo};
+\end{tikzpicture}
+\caption{Structure de la page d'accueil}
+\end{figure}
+
+\clearpage
+\subsection*{Espace d'administration}
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[
+    zone/.style={draw=slate, thick, align=center, font=\small}
+]
+\node[zone, minimum width=3.4cm, minimum height=8.6cm, fill=ink, text=white] (side) at (0,0) {
+    \begin{tabular}{c} Logo \\[10pt] Tableau de bord \\[6pt] Produits \\[6pt]
+    Services \\[6pt] Événements \\[6pt] Stagiaires \end{tabular}
+};
+\node[zone, minimum width=8.4cm, minimum height=0.9cm, fill=white] (header) at (5.9,3.85) {Titre de la page \hfill Nom admin \quad Déconnexion};
+\node[zone, minimum width=8.4cm, minimum height=2cm, fill=ember!8] (stats) at (5.9,2) {4 cartes statistiques\\[2pt]\small Produits · Services · Événements · Stagiaires};
+\node[zone, minimum width=8.4cm, minimum height=4.6cm, fill=paper] (table) at (5.9,-1.1) {
+    \begin{tabular}{c}
+    Liste / tableau (produits, services,\\ événements ou stagiaires)\\[6pt]
+    \small Colonnes + actions « Modifier » / « Supprimer »\\[10pt]
+    \small [Bouton : + Ajouter]
+    \end{tabular}
+};
+\end{tikzpicture}
+\caption{Structure de l'espace d'administration}
+\end{figure}
+
+% ============================================================
+\chapter{Conclusion et perspectives}
+\label{ch:perspectives}
+% ============================================================
+
+Le présent rapport a détaillé la conception du site vitrine et de l'espace
+d'administration de Pialoa Tech : analyse des besoins, modélisation des
+données, architecture technique et conception de l'interface. Cette
+conception répond aux objectifs initiaux en offrant à l'entreprise un outil
+lui permettant de gérer en autonomie l'ensemble de ses contenus publics.
+
+\section*{Perspectives d'évolution}
+
+\begin{itemize}[leftmargin=1.2em]
+    \item Mise en place d'un espace de connexion dédié aux stagiaires,
+    leur permettant de consulter leurs informations personnelles.
+    \item Introduction de rôles administrateurs multiples (éditeur,
+    super-administrateur) à partir du champ \texttt{role} déjà présent dans
+    le modèle de données.
+    \item Ajout de fonctionnalités de recherche et de filtres sur les listes
+    d'administration (par secteur, par période).
+    \item Envoi de notifications par e-mail lors de la publication d'un
+    nouvel événement.
+    % \item Migration du stockage des fichiers vers un service cloud (Amazon
+    % S3 ou équivalent) en cas de montée en charge.
+\end{itemize}
+
+\end{document}
