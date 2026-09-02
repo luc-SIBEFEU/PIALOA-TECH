@@ -34,10 +34,14 @@ class AvisController extends Controller
         return view('admin.avi.index', compact('avis', 'avis_accepted', 'avis_added', 'avis_denided'));
     }
     
-    public function destroy(Avis $avis)
+public function destroy(Avis $avis)
     {
-        $avis->delete();
-        return redirect()->route('admin.avi.index')->with('success', 'Avis supprimé avec succès.');
+        try {
+            $avis->delete();
+            return redirect()->route('admin.avi.index')->with('success', 'Avis supprimé avec succès.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.avi.index')->with('error', 'Erreur lors de la suppression.');
+        }
     }
     
     public function see(Avis $avis)

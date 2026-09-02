@@ -34,12 +34,12 @@
     </div>
 
     <div>
-        <label for="secteur" class="label-field">Theme</label>
+        <label for="secteur" class="label-field">Secteur</label>
         <input type="text" name="secteur" id="secteur" value="{{ old('secteur', $stagiaire->secteur) }}" placeholder="ex : Développement web" class="input-field" required>
     </div>
     <div>
-        <label for="description" class="label-field">Description</label>
-        <input type="text" name="description" id="description" class="input-field" value="{{ old('description', $stagiaire->description) }}" placeholder="Description du theme ou du projet de stage" required>
+        <label for="description" class="label-field">Thème</label>
+        <input type="text" name="description" id="description" class="input-field" value="{{ old('description', $stagiaire->description) }}" placeholder="Projet de stage" required>
     </div>
     <div>
         <div>

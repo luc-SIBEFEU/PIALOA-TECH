@@ -23,25 +23,27 @@
 <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.css') }}">
 @section('content')
     <div class="flex items-center justify-between mb-6">
-        <p class="text-slate text-sm">{{ $stagiaires->total() }} stagiaire(s)</p>
-        <form method="POST" action="{{ route('admin.search') }}">
+        <div><p class="text-slate text-sm"><i class="bi bi-person-circle"></i>{{ $stagiaires->total() }} stagiaire(s)</p></div>
+        <div><form method="POST" action="{{ route('admin.search') }}">
             @csrf
             <div class="for">
                 <div><input type="text"  name="nom" class="input-field" required placeholder="Nom"></div>
                 <div><button type="submit" class="btn-primary"><i class="bi bi-search">Rechercher</i></button></div>
             </div>
-        </form>
-        <a href="{{ route('admin.stagiaires.create') }}" class="btn-primary !px-5 !py-2.5 text-sm">+ Ajouter un stagiaire</a> <br>
+        </form></div>
+        <div><a href="{{ route('admin.stagiaires.create') }}" class="btn-primary !px-5 !py-2.5 text-sm">+ Ajouter un stagiaire</a> <br></div>
         
     </div>
+    <div class="flex">
     @if ($result)
-        <div class="flex justify-between mb-6 items-center">
+        <div class="justify-between mb-6 items-center">
             <div><h2 class="text-sm font-display font-semibold mb-7 mt-5 text-ember" style="font-weight: 700; font-size:20px;">
                 Resultats Pour: <span class="text-ink" style="font-weight: 900; font-size:35px;"> {{ $result }}</span>
             </h2></div>
             <div><a href="{{ route('admin.stagiaires.index') }}" class="text-sm font-display font-semibold text-ember hover:text-ink">Clear </a></div>
         </div>
     @endif
+    </div>
     <ul>
         <li id="all" class="all" onclick="display_all()">Tout</li>
         <li id="pending" onclick="display_pending()">En Cours</li>
@@ -56,10 +58,9 @@
                     <th class="py-3 px-6">E-mail</th>
                     <th class="py-3 px-6">Secteur</th>
                     <th class="py-3 px-6">Période</th>
-                    <th class="py-3 px-6">Description</th>
+                    <th class="py-3 px-6">Thème</th>
                     <th class="py-3 px-6">Rapport</th>
                     <th class="py-3 px-6">Staut</th>
-                    <th class="py-3 px-6 text-right">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -113,7 +114,6 @@
                     @endif">{{ $stagiaire->statut }}</span>
                         </td>
                         <td class="py-3 px-6 text-right space-x-3">
-
                             <a href="{{ route('admin.taches.view', $stagiaire) }}" class="text-ember font-display font-semibold hover:text-ink"><i class="bi bi-newspaper"></i></a>
                             <a href="{{ route('admin.stagiaires.edit', $stagiaire) }}" class="text-ember font-display font-semibold hover:text-ink"><i class="bi bi-pencil-fill"></i></a>
                             <form action="{{ route('admin.stagiaires.destroy', $stagiaire) }}" method="POST" class="inline" onsubmit="return confirm('Supprimer ce stagiaire ?');">
@@ -142,9 +142,8 @@
                     <th class="py-3 px-6">E-mail</th>
                     <th class="py-3 px-6">Secteur</th>
                     <th class="py-3 px-6">Période</th>
-                    <th class="py-3 px-6">Description</th>
+                    <th class="py-3 px-6">Thème</th>
                     <th class="py-3 px-6">Rapport</th>
-                    <th class="py-3 px-6 text-right">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -221,9 +220,8 @@
                     <th class="py-3 px-6">E-mail</th>
                     <th class="py-3 px-6">Secteur</th>
                     <th class="py-3 px-6">Période</th>
-                    <th class="py-3 px-6">Description</th>
+                    <th class="py-3 px-6">Thème</th>
                     <th class="py-3 px-6">Rapport</th>
-                    <th class="py-3 px-6 text-right">Actions</th>
                 </tr>
             </thead>
             <tbody>

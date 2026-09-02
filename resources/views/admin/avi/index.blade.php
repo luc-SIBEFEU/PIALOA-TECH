@@ -44,7 +44,11 @@
                     <tr class="border-t border-slate/10">
                         <td class="py-3 px-6 font-medium">{{ $avis->nom }}</td>
                         <td class="py-3 px-6 text-slate">{{ $avis->email }}</td>
-                        <td class="py-3 px-6">{{ $avis->statut }}</td>
+                        <td class="py-3 px-6">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium {{ $avis->statut_badge }}">
+                                {{ $avis->statut_libelle }}
+                            </span>
+                        </td>
                         <td class="py-3 px-6 text-right space-x-3">
                             <a href="{{ route('admin.avi.see', $avis) }}" class="text-ember font-display font-semibold hover:text-ink"><i class="bi bi-eye-fill"></i></a>
                             <!-- Valider -->
@@ -63,10 +67,10 @@
                                 @csrf
                                 </form>
                             @endif
-                            <form action="{{ route('admin.avi.destroy', $avis) }}" method="POST" class="inline" onsubmit="return confirm('Supprimer cet avis ?');">
+                            <!-- <form action="{{ route('admin.avi.destroy', $avis) }}" method="POST" class="inline" onsubmit="return confirm('Supprimer cet avis ?');">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="text-claret font-display font-semibold hover:text-ink"><i class="bi bi-trash-fill"></i></button>
-                            </form>
+                            </form> -->
                         </td>
                     </tr>
                 @empty
@@ -94,10 +98,10 @@
                         <td class="py-3 px-6">{{ $avis_accepted->statut }}</td>
                         <td class="py-3 px-6 text-right space-x-3">
                             <a href="{{ route('admin.avi.see', $avis_accepted) }}" class="text-ember font-display font-semibold hover:text-ink"><i class="bi bi-eye-fill"></i></a>
-                            <form action="{{ route('admin.avi.destroy', $avis_accepted) }}" method="POST" class="inline" onsubmit="return confirm('Supprimer cet avis ?');">
+                            <!-- <form action="{{ route('admin.avi.destroy', $avis_accepted) }}" method="POST" class="inline" onsubmit="return confirm('Supprimer cet avis ?');">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="text-claret font-display font-semibold hover:text-ink"><i class="bi bi-trash"></i></button>
-                            </form>
+                            </form> -->
                         </td>
                     </tr>
                 @empty
@@ -127,9 +131,9 @@
                         <td class="py-3 px-6">{{ $avis_denided->statut }}</td>
                         <td class="py-3 px-6 text-right space-x-3">
                             <a href="{{ route('admin.avi.see', $avis_denided) }}" class="text-ember font-display font-semibold hover:text-ink"><i class="bi bi-eye-fill"></i></a>
-                            <form action="{{ route('admin.avi.destroy', $avis_denided) }}" method="POST" class="inline" onsubmit="return confirm('Supprimer cet avis ?');">
+                            <form action="{{ route('admin.avi.destroy', $avis_denided) }}" method="POST" class="inline" onsubmit="return confirm('Supprimer ct avis ?');">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="text-claret font-display font-semibold hover:text-ink"><i class="bi bi-trash"></i></button>
+                                <button type="submit" class="text-claret font-display font-semibold hover:text-ink"><i class="bi bi-trash-fill"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -173,10 +177,10 @@
                                 <form id="cancel-form-{{ $avis_added->id }}" action="{{ route('admin.avi.cancel', $avis_added) }}" method="POST" style="display: none;">
                                 @csrf
                                 </form>
-                            <form action="{{ route('admin.avi.destroy', $avis_added) }}" method="POST" class="inline" onsubmit="return confirm('Supprimer cet avis ?');">
+                            <!-- <form action="{{ route('admin.avi.destroy', $avis_added) }}" method="POST" class="inline" onsubmit="return confirm('Supprimer cet avis ?');">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="text-claret font-display font-semibold hover:text-ink"><i class="bi bi-trash-fill"></i></button>
-                            </form>
+                            </form> -->
                         </td>
                     </tr>
                 @empty

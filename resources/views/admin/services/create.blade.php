@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title', 'Ajouter un service')
-
+<link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
 @section('content')
     <form method="POST" action="{{ route('admin.services.store') }}" class="card">
         @csrf

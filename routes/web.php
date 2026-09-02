@@ -35,7 +35,6 @@ Route::get('/stagiaires/{stagiaire}', [StagiairesController::class, 'show'])->na
 Route::get('/avis', [AvisController::class, 'view'])->name('avis.index');
 Route::post('/avis', [AvisController::class, 'store'])->name('avis.store');
 
-
 Route::get('stagiaire/{stagiaire}/document', [StagiairesController::class, 'showDocument'])->name('stagiaire.document');
 Route::get('stagiaire/{stagiaire}/download', [StagiairesController::class, 'downloadDocument'])->name('stagiaire.download');
 
@@ -50,6 +49,7 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [LoginController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
+
 /*
 |--------------------------------------------------------------------------
 | Back-office (admin)
@@ -62,17 +62,21 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('services', AdminServiceController::class)->except('show');
     Route::resource('evenements', AdminEvenementController::class)->except('show');
     Route::resource('stagiaires', StagiaireController::class)->except('show');
-    Route::resource('taches', TacheController::class)->parameters([
-    'taches' => 'tache' // Force l'utilisation de {tache} au lieu de {tach}
-])->except('show');
-    // Route::resource('taches', TacheController::class)->except('show');
-    Route::resource('avi', AvisController::class)->except('show');
+    Route::resource('taches', TacheController::class)->parameters(['taches' => 'tache'])->except('show');
+
+    // ✅ Routes pour les avis - CORRIGÉES
+    Route::get('avi/see/{avis}', [AvisController::class, 'see'])->name('avi.see');
+    Route::post('avi/validate/{avis}', [AvisController::class, 'validate'])->name('avi.validate');
+    Route::post('avi/cancel/{avis}', [AvisController::class, 'cancel'])->name('avi.cancel');
+    Route::delete('avi/{avis}', [AvisController::class, 'destroy'])->name('avi.destroy'); // ✅ Route DELETE explicite
+    Route::resource('avi', AvisController::class)->except(['show', 'update', 'destroy']); // ✅ On enlève destroy de resource
 
     Route::post('search', [StagiaireController::class, 'search'])->name('search');
     Route::get('Stagiaire/{stagiaire}/taches', [TacheController::class, 'view'])->name('taches.view');
     Route::post('tache/{id}/update', [TacheController::class, 'edit'])->name('taches.update');
 
-    Route::get('avi/{avi}', [AvisController::class, 'see'])->name('avi.see');
-
+    // Routes pour les documents
+    Route::get('stagiaires/{stagiaire}/document', [StagiaireController::class, 'showDocument'])->name('stagiaires.document');
+    Route::get('stagiaires/{stagiaire}/download', [StagiaireController::class, 'downloadDocument'])->name('stagiaires.download');
+    Route::delete('stagiaires/{stagiaire}/document', [StagiaireController::class, 'deleteDocument'])->name('stagiaires.document.delete');
 });
-

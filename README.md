@@ -50,7 +50,7 @@ cp .env.example .env
 ./vendor/bin/sail artisan key:generate
 # Ou si vous n'avez pas encore installé les dépendances avec Composer:
 # docker-compose run --rm composer create-project laravel/laravel .
-# Puis copier les fichiers de cette archive comme décrit dans la méthode traditionnelle
+
 
 # 3. Démarrer les conteneurs
 docker-compose up -d
@@ -219,7 +219,6 @@ Les fichiers suivants décrivent l'environnement de développement :
 
 ## 10. Documentation supplémentaire
 
-Consultez `architecture.tex` pour une description détaillée de l'architecture (Docker Compose, Kubernetes, bonnes pratiques, monitoring, CI/CD, etc.). Compilez-le avec LaTeX pour obtenir un PDF :
-```bash
-pdflatex architecture.tex
-```
+Consultez  **[architecture.pdf](./architecture.pdf)**. pour une description détaillée de l'architecture (Docker Compose, Kubernetes, bonnes pratiques, monitoring, CI/CD, etc.). 
+#### [Rapport de conception](rapport_conception.pdf)
+

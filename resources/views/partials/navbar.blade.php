@@ -14,14 +14,6 @@
             <a href="{{ route('stagiaire.index') }}" class="hover:text-ember transition-colors {{ request()->routeIs('stagiaire.*') ? 'text-ember' : 'text-ink' }}">Stagiaires</a>
         </nav>
 
-        <div class="hidden lg:flex items-center gap-4">
-            @auth
-                <a href="{{ route('admin.dashboard') }}" class="btn-outline !px-5 !py-2 text-sm">Tableau de bord</a>
-            @else
-                <a href="{{ route('login') }}" class="btn-primary !px-5 !py-2 text-sm">Espace admin</a>
-            @endauth
-        </div>
-
         <button id="nav-toggle" class="lg:hidden p-2" aria-label="Ouvrir le menu">
             <span class="dot-cluster"><span></span><span></span><span></span><span></span><span></span><span></span></span>
         </button>

@@ -50,7 +50,8 @@
             @forelse ($services as $service)
                 <div class="card">
                     <div class="w-10 h-10 rounded-lg bg-ember/10 flex items-center justify-center mb-4">
-                        <span class="w-3 h-3 rounded-full bg-ember"></span>
+                        <!-- <span class="w-3 h-3 rounded-full bg-ember"></span> -->
+                        <i class="bi bi-{{ $service->icone }}"></i>
                     </div>
                     <h3 class="font-display font-semibold text-lg mb-2">{{ $service->nom }}</h3>
                     <p class="text-slate text-sm leading-relaxed">{{ Str::limit($service->description, 100) }}</p>

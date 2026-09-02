@@ -27,111 +27,7 @@ Extensions PHP nécessaires (généralement incluses par défaut) : `pdo_mysql`,
 
 ---
 
-## 2. Installation étape par étape
-
-### 2.1 Créer le projet Laravel
-
-L'archive fournie contient uniquement le **code applicatif** (contrôleurs,
-modèles, vues, routes...), pas le noyau Laravel ni le dossier `vendor/`. On
-part donc d'une installation Laravel neuve, puis on copie ces fichiers
-par-dessus.
-
-```bash
-composer create-project laravel/laravel pialoatech-app
-cd pialoatech-app
-```
-
-### 2.2 Copier les fichiers du projet
-
-Décompressez `pialoatech-laravel.zip`, puis copiez son contenu dans le dossier
-`pialoatech-app` créé à l'étape précédente (en écrasant les fichiers
-existants : `composer.json`, `package.json`, `routes/web.php`,
-`bootstrap/app.php`, etc.) :
-
-```bash
-cp -r /chemin/vers/pialoatech/* /chemin/vers/pialoatech-app/
-cp -r /chemin/vers/pialoatech/.gitignore /chemin/vers/pialoatech-app/
-```
-
-### 2.3 Installer les dépendances
-
-```bash
-composer install
-npm install
-```
-
-### 2.4 Configurer l'environnement
-
-```bash
-cp .env.example .env
-php artisan key:generate
-```
-
-Ouvrez `.env` et renseignez vos accès MySQL :
-
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=pialoatech
-DB_USERNAME=root
-DB_PASSWORD=votre_mot_de_passe
-```
-
-Créez ensuite la base de données :
-
-```bash
-mysql -u root -p -e "CREATE DATABASE pialoatech CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-```
-
-### 2.5 Lien de stockage public
-
-**Étape obligatoire** : sans elle, les images de produits/événements, les
-avatars de stagiaires et les documents ne s'afficheront pas.
-
-```bash
-php artisan storage:link
-```
-
-Cette commande crée un lien symbolique `public/storage` pointant vers
-`storage/app/public`, où sont enregistrés tous les fichiers uploadés.
-
-### 2.6 Migrations et données de démonstration
-
-```bash
-php artisan migrate --seed
-```
-
-Cela crée toutes les tables (`users`, `produits`, `services`, `evenements`,
-`stagiaires`, ...) et insère :
-- un compte administrateur (voir section 4)
-- 8 services, 2 produits et 1 événement de démonstration
-
-Si vous voulez repartir de zéro sans les données de démo :
-
-```bash
-php artisan migrate:fresh
-php artisan db:seed --class=AdminUserSeeder   # crée uniquement l'admin
-```
-
-### 2.7 Lancer le projet en local
-
-Deux terminaux sont nécessaires :
-
-```bash
-# Terminal 1 — serveur PHP
-php artisan serve
-
-# Terminal 2 — compilation Tailwind/JS en continu
-npm run dev
-```
-
-Rendez-vous sur **http://localhost:8000**. L'espace admin est accessible via
-le bouton "Espace admin" du menu, ou directement sur `/login`.
-
----
-
-## 3. Structure du projet
+## 2. Structure du projet
 
 ```
 app/
@@ -184,7 +80,7 @@ public/images/      Logo et visuel de démonstration
 
 ---
 
-## 4. Comptes et accès
+## 3. Comptes et accès
 
 ### Administrateur par défaut
 
@@ -220,11 +116,11 @@ php artisan tinker
 
 ---
 
-## 5. Gestion des fichiers uploadés
+## 4. Gestion des fichiers uploadés
 
 Tous les fichiers (images de produits/événements, avatars, documents) sont
 stockés dans `storage/app/public/...` et servis via le lien symbolique
-`public/storage` créé à l'étape 2.5.
+`public/storage`
 
 | Type de fichier          | Dossier                          | Règles de validation                     |
 |---------------------------|-----------------------------------|--------------------------------------------|
@@ -238,7 +134,7 @@ automatiquement supprimé du disque (voir les contrôleurs `Admin/*Controller.ph
 
 ---
 
-## 6. Commandes artisan utiles
+## 5. Commandes artisan utiles
 
 ```bash
 php artisan route:list                 # Lister toutes les routes
@@ -252,7 +148,7 @@ php artisan optimize:clear             # Vider tous les caches (config, routes, 
 
 ---
 
-## 7. Déploiement en production
+## 6. Déploiement en production
 
 1. **Variables d'environnement** : sur le serveur, définir
    `APP_ENV=production` et `APP_DEBUG=false` dans `.env` (ne jamais laisser
@@ -279,7 +175,7 @@ php artisan optimize:clear             # Vider tous les caches (config, routes, 
 
 ---
 
-## 8. Dépannage (erreurs fréquentes)
+## 7. Dépannage (erreurs fréquentes)
 
 | Symptôme                                                     | Cause probable                                   | Solution                                              |
 |----------------------------------------------------------------|----------------------------------------------------|----------------------------------------------------------|
@@ -293,7 +189,7 @@ php artisan optimize:clear             # Vider tous les caches (config, routes, 
 
 ---
 
-## 9. Aller plus loin
+## 8. Aller plus loin
 
 Idées d'évolutions pour la suite du projet :
 - Espace de connexion dédié aux stagiaires (leur fiche est actuellement

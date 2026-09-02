@@ -21,7 +21,9 @@
             <tbody>
                 @forelse ($services as $service)
                     <tr class="border-t border-slate/10">
-                        <td class="py-3 px-6 font-medium">{{ $service->nom }}</td>
+                        <td class="py-3 px-6 font-medium">
+                            <span class="px-4"><i class="bi bi-{{ $service->icone }}"></i></span>
+                        {{ $service->nom }}</td>
                         <td class="py-3 px-6 text-slate">{{ Str::limit($service->description, 60) }}</td>
                         <td class="py-3 px-6 text-right space-x-3">
                             <a href="{{ route('admin.services.edit', $service) }}" class="text-ember font-display font-semibold hover:text-ink">Modifier</a>

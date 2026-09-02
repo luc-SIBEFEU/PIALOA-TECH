@@ -5,6 +5,10 @@
 /public/storage
 /storage/*.key
 /vendor
+*.tex
+*.txt
+*.sh
+doc/
 .env
 .env.backup
 .env.production

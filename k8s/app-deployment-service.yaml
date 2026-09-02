@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pialoa-app
+  labels:
+    app: pialoa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pialoa
+  template:
+    metadata:
+      labels:
+        app: pialoa
+    spec:
+      containers:
+        - name: app
+          image: pialoa/app:latest
+          ports:
+            - containerPort: 8000   # Laravel
+            - containerPort: 5173   # Vite
+          envFrom:
+            - configMapRef:
+                name: pialoa-app-config
+          volumeMounts:
+            - name: app-code
+              mountPath: /var/www
+          # Liveness and readiness probes (simple)
+          livenessProbe:
+            httpGet:
+              path: /up
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /up
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      volumes:
+        - name: app-code
+          emptyDir: {}  # For dev; in prod use a PVC or git-sync
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pialoa-app
+spec:
+  type: LoadBalancer
+  selector:
+    app: pialoa
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+    - name: vite
+      port: 80
+      targetPort: 5173

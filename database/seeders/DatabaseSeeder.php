@@ -30,19 +30,19 @@ class DatabaseSeeder extends Seeder
             [
                 'nom' => "Développement d'applications mobiles",
                 'description' => 'Applications Android et iOS natives ou multiplateformes.',
-                'icone' => 'smartphone',
+                'icone' => 'phone-fill',
                 'created_at' => now(), 'updated_at' => now(),
             ],
             [
                 'nom' => 'Design graphique et web',
                 'description' => 'Identité visuelle, maquettes UI/UX et supports de communication.',
-                'icone' => 'palette',
+                'icone' => 'palette-fill',
                 'created_at' => now(), 'updated_at' => now(),
             ],
             [
                 'nom' => 'Community management',
                 'description' => 'Gestion et animation de vos réseaux sociaux.',
-                'icone' => 'megaphone',
+                'icone' => 'megaphone-fill',
                 'created_at' => now(), 'updated_at' => now(),
             ],
             [
@@ -54,13 +54,13 @@ class DatabaseSeeder extends Seeder
             [
                 'nom' => 'Installation des stations météo',
                 'description' => 'Déploiement de stations de mesure météorologique connectées.',
-                'icone' => 'cloud',
+                'icone' => 'cloud-fill',
                 'created_at' => now(), 'updated_at' => now(),
             ],
             [
                 'nom' => 'Automatisme et maintenance industrielle',
                 'description' => "Solutions d'automatisation et maintenance des équipements industriels.",
-                'icone' => 'settings',
+                'icone' => 'gear-fill',
                 'created_at' => now(), 'updated_at' => now(),
             ],
         ]);

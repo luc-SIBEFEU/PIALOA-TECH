@@ -70,7 +70,7 @@
         <select name="stagiaire_id" id="stagiaire_id" class="input-field" required>
             <!-- <option value="">-- Sélectionnez un stagiaire --</option> -->
             @foreach($stagiaires as $id => $nom)
-                <option value="{{ $id }}" {{ old('stagiaire_id') == $id ? 'selected' : '' }}>
+                <option value="{{ $id }}" {{ old('stagiaire_id', $tache->stagiaire_id) == $id ? 'selected' : '' }}>
                     {{ $nom }}
                 </option>
             @endforeach
